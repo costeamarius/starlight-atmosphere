@@ -13,4 +13,4 @@ Children: The app does not knowingly collect any data from anyone, including chi
 
 Changes: Any update to this policy will be published on the app's Microsoft Store page.
 
-Contact: For questions, contact the developer through the Microsoft Store listing or https://buymeacoffee.com/mariuscostea.
+Contact: For questions, contact the developer through the Microsoft Store listing or https://buymeacoffee.com/mariuscostea
