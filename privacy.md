@@ -8,7 +8,7 @@ Starlight Atmosphere is developed by Marius Costea ("Starlight Atmos").
 
 **Local settings:** Your preferences (selected theme, language, display level) and a small local diagnostic log are saved only on your own computer and are never sent anywhere. Uninstalling the Microsoft Store version removes them.
 
-**External links:** The app contains an optional "Support the developer" link that opens Buy Me a Coffee in your web browser. Any information you provide there is handled by Buy Me a Coffee under its own privacy policy. Donations are voluntary and unlock nothing in the app.
+**External links:** The app contains an optional "Support the developer (PayPal)" link that opens a PayPal donation page in your web browser. Any information you provide there is handled by PayPal under its own privacy policy. Donations are voluntary and unlock nothing in the app.
 
 **Children:** The app does not knowingly collect any data from anyone, including children.
 
