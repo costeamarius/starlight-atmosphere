@@ -11,6 +11,8 @@ External links: The app contains an optional "Support the developer" link that o
 
 Children: The app does not knowingly collect any data from anyone, including children.
 
-Changes: Any update to this policy will be published on the app's Microsoft Store page.
+Local settings: Your preferences (selected theme, language, display level) and a small diagnostic log are saved only on your own computer and never leave it. Uninstalling the Microsoft Store version removes them.
+
+Changes: Any update to this policy will be published at this address with a new date.
 
 Contact: For questions, contact the developer through the Microsoft Store listing or https://buymeacoffee.com/mariuscostea
