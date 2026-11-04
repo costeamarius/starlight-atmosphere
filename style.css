@@ -52,6 +52,25 @@ h1{font-size:clamp(2.3rem,5vw,3.6rem);letter-spacing:-.02em;margin-bottom:.2em;b
 .scene{position:relative;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;background:var(--bg2);border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 8px rgba(255,255,255,.03)}
 .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
 .shot.on{opacity:1}
+.scene{cursor:zoom-in}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(21,16,28,.6);color:#fff;font:inherit;font-size:1.6rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 3px;opacity:.75;transition:opacity .2s,background .2s}
+.arrow:hover,.arrow:focus-visible{opacity:1;background:rgba(21,16,28,.85)}
+.arrow.prev{left:10px}.arrow.next{right:10px}
+.scene .arrow{opacity:0}
+.scene:hover .arrow,.scene:focus-within .arrow{opacity:.85}
+@media (hover:none){.scene .arrow{opacity:.75}}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:20;background:rgba(8,6,12,.96);display:flex;align-items:center;justify-content:center;padding:56px 64px}
+.lb[hidden]{display:none}
+.lb-fig{margin:0;max-width:1600px;width:100%;display:flex;flex-direction:column;align-items:center}
+.lb-fig img{max-width:100%;max-height:calc(100vh - 140px);width:auto;height:auto;border-radius:10px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+.lb-fig figcaption{margin-top:12px;color:var(--muted);font-size:.95rem}
+.lb .arrow{width:46px;height:46px;opacity:.85}
+.lb .arrow.prev{left:12px}.lb .arrow.next{right:12px}
+.lb-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:1.7rem;line-height:1;cursor:pointer;padding:0 0 3px}
+.lb-close:hover{background:rgba(255,255,255,.14)}
+@media (max-width:560px){.lb{padding:56px 8px}.lb .arrow{top:auto;bottom:14px;transform:none}}
 
 .tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
 .tabs button{font:inherit;font-size:.88rem;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:99px;padding:6px 14px;cursor:pointer}

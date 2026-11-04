@@ -84,12 +84,14 @@
       </div>
 
       <figure class="scene-box">
-        <div class="scene" id="scene">
+        <div class="scene" id="scene" tabindex="0" aria-roledescription="carousel" aria-label="Store screenshots">
           <img class="shot on" data-t="autumn" src="assets/screens/autumn-800.webp" srcset="assets/screens/autumn-800.webp 800w, assets/screens/autumn.webp 1600w" sizes="(max-width:860px) 100vw, 600px" width="1600" height="900" fetchpriority="high" decoding="async" alt="Autumn theme: falling leaves drifting over the Windows desktop, with warm decorations along the taskbar">
           <img class="shot" data-t="winter" src="assets/screens/winter-800.webp" srcset="assets/screens/winter-800.webp 800w, assets/screens/winter.webp 1600w" sizes="(max-width:860px) 100vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="Winter theme: soft snow falling over the desktop and settling on the taskbar">
           <img class="shot" data-t="spring" src="assets/screens/spring-800.webp" srcset="assets/screens/spring-800.webp 800w, assets/screens/spring.webp 1600w" sizes="(max-width:860px) 100vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="Spring theme: blossoms floating across the desktop on a light breeze">
           <img class="shot" data-t="summer" src="assets/screens/summer-800.webp" srcset="assets/screens/summer-800.webp 800w, assets/screens/summer.webp 1600w" sizes="(max-width:860px) 100vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="Summer theme: warm light and glowing motes over the desktop">
           <img class="shot" data-t="space-launch" src="assets/screens/space-launch-800.webp" srcset="assets/screens/space-launch-800.webp 800w, assets/screens/space-launch.webp 1600w" sizes="(max-width:860px) 100vw, 600px" width="1600" height="900" loading="lazy" decoding="async" alt="Space Launch theme: a rocket launch site along the taskbar under a starry sky">
+          <button type="button" class="arrow prev" aria-label="Previous screenshot">&#8249;</button>
+          <button type="button" class="arrow next" aria-label="Next screenshot">&#8250;</button>
         </div>
         <div class="tabs" role="group" aria-label="Show a theme">
           <button type="button" data-t="autumn" aria-pressed="true">Autumn</button>
@@ -98,7 +100,7 @@
           <button type="button" data-t="summer" aria-pressed="false">Summer</button>
           <button type="button" data-t="space-launch" aria-pressed="false">Space Launch</button>
         </div>
-        <figcaption>Screenshots from the Microsoft Store listing. The effects run on your real desktop and are fully click-through.</figcaption>
+        <figcaption>Screenshots from the Microsoft Store listing. The effects run on your real desktop and are fully click-through. Click an image to enlarge it.</figcaption>
       </figure>
     </div>
   </section>
@@ -165,24 +167,93 @@
   </div>
 </footer>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Screenshot viewer" hidden>
+  <button type="button" class="lb-close" aria-label="Close">&#215;</button>
+  <button type="button" class="arrow prev" aria-label="Previous screenshot">&#8249;</button>
+  <figure class="lb-fig">
+    <img id="lb-img" src="" alt="" width="1600" height="900">
+    <figcaption id="lb-cap"></figcaption>
+  </figure>
+  <button type="button" class="arrow next" aria-label="Next screenshot">&#8250;</button>
+</div>
+
 <script>
 (function () {
-  var shots = document.querySelectorAll('#scene .shot');
+  var scene = document.getElementById('scene');
+  var shots = scene.querySelectorAll('.shot');
   var tabs = document.querySelectorAll('.tabs button');
-  function set(t) {
+  var names = [], cur = 0, timer = null, stopped = false, paused = false;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (var i = 0; i < tabs.length; i++) names.push(tabs[i].textContent);
+  function show(n) {
+    cur = (n + shots.length) % shots.length;
     for (var k = 0; k < shots.length; k++) {
-      var on = shots[k].getAttribute('data-t') === t;
+      var on = k === cur;
       if (on) shots[k].loading = 'eager';
       shots[k].classList.toggle('on', on);
       shots[k].setAttribute('aria-hidden', on ? 'false' : 'true');
+      tabs[k].setAttribute('aria-pressed', on ? 'true' : 'false');
     }
-    for (k = 0; k < tabs.length; k++) tabs[k].setAttribute('aria-pressed', tabs[k].getAttribute('data-t') === t ? 'true' : 'false');
   }
-  for (var i = 0; i < tabs.length; i++) tabs[i].addEventListener('click', function () { set(this.getAttribute('data-t')); });
+  function tick() { if (!paused && !stopped && !document.hidden && lb.hidden) show(cur + 1); }
+  function stop() { stopped = true; clearInterval(timer); }
+  for (i = 0; i < tabs.length; i++) (function (n) { tabs[n].addEventListener('click', function () { stop(); show(n); }); })(i);
+  scene.querySelector('.prev').addEventListener('click', function (e) { e.stopPropagation(); stop(); show(cur - 1); });
+  scene.querySelector('.next').addEventListener('click', function (e) { e.stopPropagation(); stop(); show(cur + 1); });
+  var box = scene.parentNode;
+  box.addEventListener('mouseenter', function () { paused = true; });
+  box.addEventListener('mouseleave', function () { paused = false; });
+  box.addEventListener('focusin', function () { paused = true; });
+  box.addEventListener('focusout', function () { paused = false; });
   var m = new Date().getMonth();
-  set(m >= 2 && m <= 4 ? 'spring' : m >= 5 && m <= 7 ? 'summer' : m >= 8 && m <= 10 ? 'autumn' : 'winter');
+  show(m >= 2 && m <= 4 ? 2 : m >= 5 && m <= 7 ? 3 : m >= 8 && m <= 10 ? 0 : 1);
+  if (!reduce) timer = setInterval(tick, 5000);
   window.addEventListener('load', function () {
     setTimeout(function () { for (var k = 0; k < shots.length; k++) shots[k].loading = 'eager'; }, 1500);
+  });
+
+  /* lightbox */
+  var lb = document.getElementById('lb'), img = document.getElementById('lb-img'), cap = document.getElementById('lb-cap');
+  var li = 0, opener = null, sx = null;
+  function lbShow(n) {
+    li = (n + shots.length) % shots.length;
+    img.src = shots[li].getAttribute('data-full');
+    img.alt = shots[li].alt;
+    cap.textContent = names[li] + ' (' + (li + 1) + ' / ' + shots.length + ')';
+  }
+  function open() {
+    opener = document.activeElement; lbShow(cur); lb.hidden = false;
+    document.body.style.overflow = 'hidden'; lb.querySelector('.lb-close').focus();
+  }
+  function close() {
+    lb.hidden = true; document.body.style.overflow = ''; show(li);
+    if (opener && opener.focus) opener.focus();
+  }
+  for (i = 0; i < shots.length; i++) {
+    shots[i].setAttribute('data-full', shots[i].getAttribute('src').replace('-800', ''));
+    shots[i].addEventListener('click', open);
+  }
+  scene.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target === scene) { e.preventDefault(); open(); } });
+  lb.querySelector('.lb-close').addEventListener('click', close);
+  lb.querySelector('.prev').addEventListener('click', function () { lbShow(li - 1); });
+  lb.querySelector('.next').addEventListener('click', function () { lbShow(li + 1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.classList.contains('lb-fig')) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') lbShow(li - 1);
+    else if (e.key === 'ArrowRight') lbShow(li + 1);
+    else if (e.key === 'Tab') {
+      var f = lb.querySelectorAll('button'), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  lb.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) lbShow(li + (dx < 0 ? 1 : -1));
   });
 })();
 </script>
