@@ -1,10 +1,12 @@
 # Privacy Policy – Starlight Atmosphere
 
-_Last updated: November 3, 2026_
+_Last updated: November 22, 2026_
 
 Starlight Atmosphere is developed by Marius Costea ("Starlight Atmos").
 
 **Data collection:** Starlight Atmosphere does not collect, store, transmit or share any personal information. The app has no accounts, no analytics, no advertising and no telemetry, and the overlay does not connect to the internet.
+
+**Audio (optional effects):** The "React to music" option of the Youth World theme and the Glow Strip "Visualizer" mode analyse the sound your computer is playing (only its loudness and frequency levels), on your computer only, so the scene can move with the music. No audio is recorded, saved or sent anywhere, and the microphone is never used.
 
 **Local settings:** Your preferences (selected theme, language, display level) and a small local diagnostic log are saved only on your own computer and are never sent anywhere. Uninstalling the Microsoft Store version removes them.
 
