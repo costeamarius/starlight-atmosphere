@@ -126,3 +126,23 @@ kbd{font:inherit;font-size:.8rem;padding:1px 6px;border-radius:5px;background:#2
   html{scroll-behavior:auto}
   .shot{transition:none}
 }
+
+/* wallpapers page */
+.top nav a[aria-current="page"]{color:var(--text)}
+.wp-intro{padding-bottom:8px}
+.wp-intro .lead{max-width:44em}
+.wp-sec{padding-top:24px}
+.wp-grid{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.wp{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.wp-img{display:block;aspect-ratio:16/9;background:var(--bg2)}
+.wp-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.wp-img:hover img{transform:scale(1.03)}
+.wp-meta{display:flex;flex-direction:column;gap:12px;padding:16px 18px 18px;flex:1;justify-content:space-between}
+.wp-meta h3{margin:0 0 2px}
+.wp-meta p{margin:0;color:var(--muted);font-size:.92rem}
+.wp-dl{align-self:flex-start;display:inline-flex;gap:8px;align-items:baseline;padding:8px 16px;border-radius:10px;border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:.92rem}
+.wp-dl span{color:var(--muted);font-size:.8rem}
+.wp-dl:hover{color:var(--text);border-color:var(--accent);background:rgba(240,160,75,.08)}
+@media (max-width:1000px){.wp-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.wp-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.wp-img img{transition:none}}
